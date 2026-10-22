@@ -51,7 +51,6 @@ class ParkingSystemApp(QMainWindow):
     def ParkTrack_banner(self):
         banner = QFrame()
         banner.setObjectName("Banner")
-        # banner.setStyleSheet(f"background-color: {Styles.SIDEBAR_COLOR}; border-radius: 6px;")
         banner.setFixedHeight(70)
         banner_layout = QHBoxLayout(banner)
         banner_layout.setContentsMargins(15, 0, 15, 0)
@@ -60,7 +59,6 @@ class ParkingSystemApp(QMainWindow):
         p_logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
         p_logo.setFixedSize(40, 40)
         p_logo.setObjectName("Logo")
-        # p_logo.setStyleSheet(f"background:color: {Styles.TERMINAL_COLOR}; color: {Styles.ACCENT_GOLD}; font-size")
         banner_layout.addWidget(p_logo)
         
         title = QLabel("TIP QC Hub Facility")
