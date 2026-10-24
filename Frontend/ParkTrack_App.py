@@ -26,28 +26,57 @@ class ParkingSystemApp(QMainWindow):
         self.main_layout = QHBoxLayout(self.central_widget)
         self.main_layout.setContentsMargins(15, 15, 15, 15)
         self.main_layout.setSpacing(15)
+
         
+        #LEFT SIDE LAYOUT
         self.left_canvas_container = QWidget()
         self.left_canvas_layout = QVBoxLayout(self.left_canvas_container)
         self.left_canvas_layout.setContentsMargins(0, 0, 0, 0)
         
-        # self.ParkTrack_parking_map_grid()
         self.apply_qss()
         self.ParkTrack_banner()
+        self.ParkTrack_parking_map_grid()
         
         self.main_layout.addWidget(self.left_canvas_container, stretch=3)
+
         
+        # RIGHT SIDE LAYOUT
         self.right_sidebar_container = QFrame()
         self.right_sidebar_container.setFixedWidth(300)
         self.right_sidebar_layout = QVBoxLayout(self.right_sidebar_container)
         self.right_sidebar_layout.setContentsMargins(10, 10, 10, 10)
         self.right_sidebar_layout.setSpacing(10)
+
+        # TABS
+        self.control_tabs = QTabWidget()
+        self.control_tabs.setStyleSheet(Styles.TAB_STYLESHEET)
+        
+        self.ParkTrack_checkin_tab_panel()
+        self.ParkTrack_billing_tab_panel()
+        self.ParkTrack_history_tab_panel()
+        self.right_sidebar_layout.addWidget(self.control_tabs, stretch=1)
+
+        # ACTIVITY LOG
+        log_title = QLabel("System Activity Log")
+        log_title.setObjectName("logTitle")
+        self.right_sidebar_layout.addWidget(log_title)
+        
+        self.activity_log_box = QTextEdit()
+        self.activity_log_box.setReadOnly(True)
+        self.activity_log_box.setFixedHeight(150)
+        self.activity_log_box.setStyleSheet(Styles.LOG_STYLESHEET)
+        self.right_sidebar_layout.addWidget(self.activity_log_box)
         
         self.main_layout.addWidget(self.right_sidebar_container, stretch=1)
         
+        self.update_ui()
+        self.log_message("System loaded successfully.")
+        
+        
     def apply_qss(self):
         self.setStyleSheet(APPLICATION_STYLESHEET)
-        
+
+        # BANNER AREA LAYOUT
     def ParkTrack_banner(self):
         banner = QFrame()
         banner.setObjectName("Banner")
@@ -86,12 +115,92 @@ class ParkingSystemApp(QMainWindow):
             lbl = QLabel(text)
             lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
             lbl.setObjectName("lblC")
-            lbl.setStyleSheet(Styles.TEXT_MUTED)
             
             metric_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            #to fix
             metric_widget.setStyleSheet(f"color: {font_color}; font-size: 14px; font-weight: bold; background: transparent; border: none;")
             
             box_vbox.addWidget(lbl)
             box_vbox.addWidget(metric_widget)
             banner_layout.addWidget(box)
+            
         self.left_canvas_layout.addWidget(banner)
+
+        #PARKING GRID AREA LAYOUT
+    def ParkTrack_parking_map_grid(self):
+        filter_strip = QHBoxLayout()
+        filter_strip.setContentsMargins(5, 5, 5, 0)
+        
+        map_filter = QLabel("Map Filter View Mode:")
+        map_filter.setObjectName("mapFilter")
+        filter_strip.addWidget(map_filter)
+        
+        viewAll_btn = QPushButton("View All")
+        viewAll_btn.setObjectName("viewAll")
+        viewAll_btn.clicked.connect(lambda: self.set_grid_filter("All"))
+        
+        viewAvail_btn = QPushButton("Available")
+        viewAvail_btn.setObjectName("viewAvail")
+        viewAll_btn.clicked.connect(lambda: self.set_grid_filter("Available"))
+        
+        viewOcc_btn = QPushButton("Occupied")
+        viewOcc_btn.setObjectName("viewOcc")
+        viewAll_btn.clicked.connect(lambda: self.set_grid_filter("Occupied"))
+        
+        filter_strip.addWidget(viewAll_btn)
+        filter_strip.addWidget(viewAvail_btn)
+        filter_strip.addWidget(viewOcc_btn)
+        filter_strip.addStretch()
+        self.left_canvas_layout.addLayout(filter_strip)
+        
+        
+        # SCROLL FUNCTION
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setObjectName("scrollArea")
+
+        # PARKING GRID FRAME
+        grid_frame = QFrame()
+        grid_frame.setObjectName("frame")
+        grid_layout = QGridLayout(grid_frame)
+        grid_layout.setContentsMargins(15, 15, 15, 15)
+        grid_layout.setHorizontalSpacing(15)
+        grid_layout.setVerticalSpacing(0) 
+        
+        
+        scroll_area.setWidget(grid_frame)
+        self.left_canvas_layout.addWidget(scroll_area)
+        
+        
+        
+    def ParkTrack_checkin_tab_panel(self):
+        panel = QWidget()
+        layout = QVBoxLayout(panel)
+        layout.setContentsMargins(10, 15, 10, 15)
+        layout.setSpacing(12)
+        
+        lbl_section = QLabel("Space Allocation Entry")
+        lbl_section.setObjectName("Allocation")
+        layout.addWidget(lbl_section)
+        
+        
+        
+        layout.addStretch()
+        self.control_tabs.addTab(panel, "Check In")
+        
+    def ParkTrack_billing_tab_panel(self):
+        pass
+    
+    def ParkTrack_history_tab_panel(self):
+        pass
+    
+    
+    def log_message(self, message):
+        timestamp = datetime.now().strftime("%I:%M:%S %p")
+        self.activity_log_box.append(f"[{timestamp}] {message}")
+        
+    def update_ui(self):
+        pass
+    
+    def set_grid_filter(self):
+        pass
