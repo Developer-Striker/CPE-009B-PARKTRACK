@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 from ParkTrack_Model import ParkingSlotWidget
 from ParkTrack_Style import APPLICATION_STYLESHEET, Styles
-from ParTrack_Engine import ParkingEngine
+from ParkTrack_Engine import ParkingEngine
 
 class ParkingSystemApp(QMainWindow):
     def __init__(self):
