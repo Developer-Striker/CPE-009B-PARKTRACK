@@ -15,19 +15,40 @@ class Styles:
     ROAD_COLOR = "#282828"
     ROAD_DASH_COLOR = "#777"
     
-#     TAB_STYLESHEET = """
-#         QTabWidget::pane { border: 1px solid #555; background: #2d2d30; border-radius: 4px; }
-#         QTabBar::tab { background: #2d2d30; color: #aaa; padding: 8px 12px; border-top-left-radius: 4px; border-top-right-radius: 4px; margin-right: 2px; border: 1px solid #555;}
-#         QTabBar::tab:selected { background: #555; color: white; font-weight: bold; border-bottom-color: transparent; }
-#     """
+    TAB_STYLESHEET = """
+        QTabWidget::pane { 
+        border: 1px solid #555; 
+        background: #2d2d30; 
+        border-radius: 4px; 
+        }
+        QTabBar::tab { 
+        background: #2d2d30; 
+        color: #aaa; 
+        padding: 8px 12px; 
+        border-top-left-radius: 4px; 
+        border-top-right-radius: 4px; 
+        margin-right: 2px; 
+        border: 1px solid #555;
+        }
+        QTabBar::tab:selected { 
+        background: #555; 
+        color: white; 
+        font-weight: bold; 
+        border-bottom-color: transparent; 
+        }
+    """
+    LOG_STYLESHEET = "background-color: #1e1e1e; color: #2ecc71; border: 1px solid #555; font-family: Courier; font-size: 11px; border-radius: 4px;"
     
-#     LOG_STYLESHEET = "background-color: #1e1e1e; color: #2ecc71; border: 1px solid #555; font-family: Courier; font-size: 11px; border-radius: 4px;"
 #     TABLE_STYLESHEET = "QTableWidget { background-color: #1e1e1e; color: white; gridline-color: #444; font-size: 11px; } QHeaderView::section { background-color: #3e3e42; color: white; padding: 4px; border: 1px solid #555; font-size: 11px; }"
 #     INPUT_STYLESHEET = "background-color: #555; color: white; border: 1px solid #777; padding: 5px; border-radius: 3px;"
 #     COMBO_STYLESHEET = "background-color: #555; color: white; padding: 5px; border-radius: 3px;"
 #     SPIN_STYLESHEET = "background-color: #555; color: white; padding: 3px;"
 
-APPLICATION_STYLESHEET = """
+QMainWindow {
+    background-color: #2d2d30;
+}
+
+
 
 QFrame#Banner {
     background-color: #3e3e42;
@@ -48,14 +69,65 @@ QLabel#bannerTitle {
     border: none;
 }
 QFrame#bannerBox {
-    background: #1e1e1e;
+    background-color: #1e1e1e;
     border: 1px solid #555;
     border-radius: 4px;
 }
 QLabel#lblC {
+    color: #aaa;
     font-size: 14px;
     font-weight: bold;
     background: transparent;
     border: none;
+}
+
+
+
+QLabel#logTitle {
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    padding-top: 5px;
+}
+
+
+
+QLabel#mapFilter {
+    color: #aaa;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton#viewAll {
+    background-color: #7f8c8d;
+    color: white;
+    font-weight bold;
+    padding: 4px 12px;
+    border-radius: 3px;
+}
+QPushButton#viewAvail {
+    background-color: #2ecc71;
+    color: white;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 3px;
+}
+QPushButton#viewOcc {
+    background-color: #e74c3c;
+    color: white;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 3px;
+}
+
+
+
+QScrollArea#scrollArea {
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    background-color: #2d2d30;
+}
+QFrame#frame {
+    background-color: #1e1e1e;
 }
 """
