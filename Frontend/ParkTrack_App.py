@@ -417,6 +417,54 @@ class ParkingSystemApp(QMainWindow):
         timestamp = datetime.now().strftime("%I:%M:%S %p")
         self.activity_log_box.append(f"[{timestamp}] {message}")
 
+    #================================FILTER FUNCTIONS=======================================
+    
+    #-------------------NEW------------------------------    
+    def set_car_status_filter(self, mode):
+        self.car_filter_status = mode
+        self.log_message(f"Filtering Car Grid status to: {mode}")
+        self.update_ui()
+    #-------------------NEW------------------------------    
+
+    #-------------------NEW------------------------------    
+    def set_moto_status_filter(self, mode):
+        self.moto_filter_status = mode
+        self.log_message(f"Filtering Motorcycle Grid status to: {mode}")
+        self.update_ui()
+    #-------------------NEW------------------------------    
+
+    #-------------------NEW------------------------------    
+    def on_vehicle_type_changed(self, selected_type):
+        if selected_type == "Motorcycle":
+            self.map_stack.setCurrentIndex(1)
+        else:
+            self.map_stack.setCurrentIndex(0)
+    #-------------------NEW------------------------------    
+    #================================FILTER FUNCTIONS=======================================
+
+    #ACTIVITY LOG
+    def handle_grid_button_click(self, spot_label):
+        if not self.engine.is_occupied(spot_label):
+            self.control_tabs.setCurrentIndex(0)
+    #-------------------NEW------------------------------    
+            if spot_label.startswith("Moto"):
+                self.vehicle_type_selector.setCurrentText("Motorcycle")
+            else:
+                self.vehicle_type_selector.setCurrentText("Car")
+                
+            index = self.spot_selector.findText(spot_label)
+            if index >= 0:
+                self.spot_selector.setCurrentIndex(index)
+            self.plateNum.setFocus()
+            self.log_message(f"Focused empty {spot_label} allocation workspace node.")
+        else:
+            self.control_tabs.setCurrentIndex(1)
+            index = self.active_spot_selector.findText(spot_label)
+            if index >= 0:
+                self.active_spot_selector.setCurrentIndex(index)
+            self.log_message(f"Focused occupied data node profile on {spot_label}.")
+    #-------------------NEW------------------------------
+
 
     
     def update_ui(self):
