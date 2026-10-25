@@ -1,0 +1,241 @@
+
+
+QMainWindow {
+    background-color: #2d2d30;
+}
+
+QFrame#rSidebar {
+    background-color: #3e3e42;
+    border-radius: 6px;
+    border: 1px solid #555555;
+}
+
+
+
+
+
+QFrame#Banner {
+    background-color: #3e3e42;
+    border-radius: 6px;
+}
+
+QLabel#Logo {
+    background-color: #1e1e1e;
+    color: #f1c40f;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+QLabel#bannerTitle {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+}
+
+QFrame#bannerBox {
+    background-color: #1e1e1e;
+    border: 1px solid #555555;
+    border-radius: 4px;
+}
+
+QLabel#lblC {
+    color: #aaaaaa;
+    font-size: 14px;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+}
+
+
+
+
+QLabel#mapFilter {
+    color: #aaaaaa;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QPushButton#viewAll {
+    background-color: #7f8c8d;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 3px;
+}
+
+QPushButton#viewAvail {
+    background-color: #2ecc71;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 3px;
+}
+
+QPushButton#viewOcc {
+    background-color: #e74c3c;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 3px;
+}
+
+QScrollArea#scrollArea {
+    border: 1px solid #555555;
+    border-radius: 6px;
+    background-color: #1e1e1e;
+}
+
+QFrame#frame {
+    background-color: #1e1e1e;
+}
+
+QFrame#slotCard {
+    background-color: #2d2d30;
+    border: 1px solid #444444;
+    border-radius: 4px;
+}
+
+QPushButton#action {
+    background-color: #555555;
+    color: #ffffff;
+    font-size: 10px;
+    border-radius: 2px;
+    padding: 2px;
+}
+
+QFrame#roadway {
+    background-color: #282828;
+    border-top: 1px dashed #777777;
+    border-bottom: 1px dashed #777777;
+}
+
+
+
+
+QTabWidget::pane { 
+    border: 1px solid #555555; 
+    background: #2d2d30; 
+    border-radius: 4px; 
+}
+
+QTabBar::tab { 
+    background: #2d2d30; 
+    color: #aaaaaa; 
+    padding: 8px 12px; 
+    border-top-left-radius: 4px; 
+    border-top-right-radius: 4px; 
+    margin-right: 2px; 
+    border: 1px solid #555555;
+}
+
+QTabBar::tab:selected { 
+    background: #555555; 
+    color: #ffffff; 
+    font-weight: bold; 
+    border-bottom-color: transparent; 
+}
+
+
+
+
+QLineEdit#panelInput, QComboBox#panelCombo {
+    background-color: #555555; 
+    color: #ffffff; 
+    border: 1px solid #777777; 
+    padding: 5px; 
+    border-radius: 3px;
+}
+
+QSpinBox#panelSpin {
+    background-color: #555555; 
+    color: #ffffff; 
+    padding: 3px;
+}
+
+QPushButton#assign {
+    background-color: #2980b9;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+QLabel#section {
+    color: #e74c3c;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QFrame#rate {
+    background-color: #2d2d30;
+    border: 1px solid #555555;
+    border-radius: 4px;
+}
+
+QPushButton#checkoutBtn {
+    background-color: #e74c3c; 
+    color: #ffffff; 
+    font-weight: bold; 
+    padding: 8px; 
+    border-radius: 4px; 
+    margin-top: 5px;
+}
+
+
+
+
+QTableWidget#ticketLog { 
+    background-color: #1e1e1e; 
+    color: #ffffff; 
+    gridline-color: #444444; 
+    font-size: 11px; 
+}
+
+QHeaderView::section { 
+    background-color: #3e3e42; 
+    color: #ffffff; 
+    padding: 4px; 
+    border: 1px solid #555555; 
+    font-size: 11px; 
+}
+
+
+
+
+QLabel#logTitle {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    padding-top: 5px;
+}
+
+QTextEdit#activityLogBox {
+    background-color: #1e1e1e; 
+    color: #2ecc71; 
+    border: 1px solid #555555; 
+    font-family: Courier; 
+    font-size: 11px; 
+    border-radius: 4px;
+}
+
+
+
+
+.mutedLabel {
+    color: #aaaaaa;
+}
+
+.lightGrayLabel {
+    color: #cccccc;
+}
+
+.boldHeaderLabel {
+    color: #aaaaaa;
+    font-weight: bold;
+    font-size: 11px;
+}
