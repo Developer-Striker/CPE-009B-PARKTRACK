@@ -1,5 +1,4 @@
-
-
+/* Application & Container Frames */
 QMainWindow {
     background-color: #2d2d30;
 }
@@ -10,13 +9,11 @@ QFrame#rSidebar {
     border: 1px solid #555555;
 }
 
-
-
-
-
+/* Header Banner */
 QFrame#Banner {
     background-color: #3e3e42;
     border-radius: 6px;
+    border: 1px solid #555555;
 }
 
 QLabel#Logo {
@@ -25,6 +22,7 @@ QLabel#Logo {
     font-size: 20px;
     font-weight: bold;
     border-radius: 4px;
+    border: 1px solid yellow;
 }
 
 QLabel#bannerTitle {
@@ -43,19 +41,17 @@ QFrame#bannerBox {
 
 QLabel#lblC {
     color: #aaaaaa;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 10px;
     background: transparent;
     border: none;
 }
 
-
-
-
+/* Map Filter Controls */
 QLabel#mapFilter {
     color: #aaaaaa;
     font-size: 12px;
     font-weight: bold;
+    border: none;
 }
 
 QPushButton#viewAll {
@@ -64,6 +60,7 @@ QPushButton#viewAll {
     font-weight: bold;
     padding: 4px 12px;
     border-radius: 3px;
+    border: none;
 }
 
 QPushButton#viewAvail {
@@ -72,6 +69,7 @@ QPushButton#viewAvail {
     font-weight: bold;
     padding: 4px 12px;
     border-radius: 3px;
+    border: none;
 }
 
 QPushButton#viewOcc {
@@ -80,8 +78,10 @@ QPushButton#viewOcc {
     font-weight: bold;
     padding: 4px 12px;
     border-radius: 3px;
+    border: none;
 }
 
+/* Map Grid & Parking Cards */
 QScrollArea#scrollArea {
     border: 1px solid #555555;
     border-radius: 6px;
@@ -90,6 +90,7 @@ QScrollArea#scrollArea {
 
 QFrame#frame {
     background-color: #1e1e1e;
+    border: none;
 }
 
 QFrame#slotCard {
@@ -104,6 +105,7 @@ QPushButton#action {
     font-size: 10px;
     border-radius: 2px;
     padding: 2px;
+    border: none;
 }
 
 QFrame#roadway {
@@ -112,47 +114,50 @@ QFrame#roadway {
     border-bottom: 1px dashed #777777;
 }
 
-
-
-
-QTabWidget::pane { 
-    border: 1px solid #555555; 
-    background: #2d2d30; 
-    border-radius: 4px; 
+/* Control Tabs */
+QTabWidget::pane {
+    border: 2px solid #555555;
+    background: #3e3e42;
+    border-radius: 4px;
 }
 
-QTabBar::tab { 
-    background: #2d2d30; 
-    color: #aaaaaa; 
-    padding: 8px 12px; 
-    border-top-left-radius: 4px; 
-    border-top-right-radius: 4px; 
-    margin-right: 2px; 
+QTabBar::tab {
+    background: #2d2d30;
+    color: #aaaaaa;
+    padding: 8px 12px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    margin-right: 2px;
     border: 1px solid #555555;
 }
 
-QTabBar::tab:selected { 
-    background: #555555; 
-    color: #ffffff; 
-    font-weight: bold; 
-    border-bottom-color: transparent; 
+QTabBar::tab:selected {
+    background: #555555;
+    color: #ffffff;
+    font-weight: bold;
+    border-bottom-color: transparent;
 }
 
-
-
-
+/* Input Fields & Combos */
 QLineEdit#panelInput, QComboBox#panelCombo {
-    background-color: #555555; 
-    color: #ffffff; 
-    border: 1px solid #777777; 
-    padding: 5px; 
+    background-color: #555;
+    color: white;
+    border: 1px solid #777;
+    padding: 5px;
     border-radius: 3px;
 }
 
 QSpinBox#panelSpin {
-    background-color: #555555; 
-    color: #ffffff; 
+    background-color: #555555;
+    color: #ffffff;
     padding: 3px;
+    border: 1px solid #777777;
+    border-radius: 3px;
+}
+
+QCheckBox#overstay {
+    color: #aaa;
+    font-size: 11px;
 }
 
 QPushButton#assign {
@@ -162,12 +167,21 @@ QPushButton#assign {
     padding: 8px;
     border-radius: 4px;
     margin-top: 5px;
+    border: none;
+}
+
+QLabel#Allocation {
+    color: #f1c40f;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
 }
 
 QLabel#section {
     color: #e74c3c;
     font-size: 13px;
     font-weight: bold;
+    border: none;
 }
 
 QFrame#rate {
@@ -177,35 +191,33 @@ QFrame#rate {
 }
 
 QPushButton#checkoutBtn {
-    background-color: #e74c3c; 
-    color: #ffffff; 
-    font-weight: bold; 
-    padding: 8px; 
-    border-radius: 4px; 
+    background-color: #e74c3c;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 4px;
     margin-top: 5px;
+    border: none;
 }
 
-
-
-
-QTableWidget#ticketLog { 
-    background-color: #1e1e1e; 
-    color: #ffffff; 
-    gridline-color: #444444; 
-    font-size: 11px; 
+/* Session History Matrix */
+QTableWidget#ticketLog {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    gridline-color: #444444;
+    font-size: 11px;
+    border: 1px solid #555555;
 }
 
-QHeaderView::section { 
-    background-color: #3e3e42; 
-    color: #ffffff; 
-    padding: 4px; 
-    border: 1px solid #555555; 
-    font-size: 11px; 
+QHeaderView::section {
+    background-color: #3e3e42;
+    color: #ffffff;
+    padding: 4px;
+    border: 1px solid #555555;
+    font-size: 11px;
 }
 
-
-
-
+/* Activity Log */
 QLabel#logTitle {
     color: #ffffff;
     font-size: 12px;
@@ -215,27 +227,12 @@ QLabel#logTitle {
 }
 
 QTextEdit#activityLogBox {
-    background-color: #1e1e1e; 
-    color: #2ecc71; 
-    border: 1px solid #555555; 
-    font-family: Courier; 
-    font-size: 11px; 
+    background-color: #1e1e1e;
+    color: #2ecc71;
+    border: 1px solid #555555;
+    font-family: Courier, monospace;
+    font-size: 11px;
     border-radius: 4px;
 }
 
 
-
-
-.mutedLabel {
-    color: #aaaaaa;
-}
-
-.lightGrayLabel {
-    color: #cccccc;
-}
-
-.boldHeaderLabel {
-    color: #aaaaaa;
-    font-weight: bold;
-    font-size: 11px;
-}
