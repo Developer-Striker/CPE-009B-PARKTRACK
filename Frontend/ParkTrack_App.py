@@ -299,7 +299,7 @@ class ParkingSystemApp(QMainWindow):
                 grid_layout.addWidget(road_strip, road_row, col)
     #-------------------NEW------------------------------
 
-
+    #PARK TRACK CHECK IN TAB FUNCTION
     def ParkTrack_checkin_tab_panel(self):
         panel = QWidget()
         layout = QVBoxLayout(panel)
@@ -348,68 +348,77 @@ class ParkingSystemApp(QMainWindow):
         self.control_tabs.addTab(panel, "Check In")
 
 
-    
+    #PARK TRACK BILLING TAB FUNCTION
     def ParkTrack_billing_tab_panel(self):
         panel = QWidget()
         layout = QVBoxLayout(panel)
         layout.setContentsMargins(10, 15, 10, 15)
         layout.setSpacing(10)
         
-        lbl_section = QLabel("Process Log-Out Operations")
-        lbl_section.setObjectName("section")
+        lbl_section = QLabel("Process Log-Out Operations", objectName="section")
         layout.addWidget(lbl_section)
         
         lbl_active = QLabel("Select Active Occupied Spot:")
-        lbl_active.setProperty("class", "mutedLabel")
+        self.subtext_labels.append(lbl_active)
         layout.addWidget(lbl_active)
         
-        self.active_spot_selector = QComboBox()
-
-        self.active_spot_selector.setObjectName("panelCombo")
+        self.active_spot_selector = QComboBox(objectName="panelCombo")
         layout.addWidget(self.active_spot_selector)
         
-        rate_box = QFrame()
-        rate_box.setObjectName("rate")
+        rate_box = QFrame(objectName="rate")
         rate_layout = QGridLayout(rate_box)
-        self.base_rate_spin = QSpinBox()
+        
+        self.base_rate_spin = QSpinBox(objectName="panelSpin")
         self.base_rate_spin.setRange(0, 1000)
         self.base_rate_spin.setValue(50)
-        self.base_rate_spin.setObjectName("panelSpin")
-        self.hourly_rate_spin = QSpinBox()
+        
+        self.hourly_rate_spin = QSpinBox(objectName="panelSpin")
         self.hourly_rate_spin.setRange(0, 1000)
         self.hourly_rate_spin.setValue(20)
-        self.hourly_rate_spin.setObjectName("panelSpin")
-        lbl_base_rate = QLabel("Base Rate (₱):")
-        rate_layout.addWidget(lbl_base_rate, 0, 0)
+        
+        lbl_base = QLabel("Base Rate (₱):")
+        self.rate_subtext_labels.append(lbl_base)
+        lbl_hourly = QLabel("Hourly Fee (₱):")
+        self.rate_subtext_labels.append(lbl_hourly)
+        
+        rate_layout.addWidget(lbl_base, 0, 0)
         rate_layout.addWidget(self.base_rate_spin, 0, 1)
-        lbl_hourly_fee = QLabel("Hourly Fee (₱):")
-        rate_layout.addWidget(lbl_hourly_fee, 1, 0)
+        rate_layout.addWidget(lbl_hourly, 1, 0)
         rate_layout.addWidget(self.hourly_rate_spin, 1, 1)
         layout.addWidget(rate_box)
-        checkout_btn = QPushButton("Calculate & Clear Invoicing")
-        checkout_btn.setObjectName("checkoutBtn")
+        
+        checkout_btn = QPushButton("Calculate & Clear Invoicing", objectName="checkoutBtn")
         checkout_btn.clicked.connect(self.process_timeout)
         layout.addWidget(checkout_btn)
+        
         layout.addStretch()
         self.control_tabs.addTab(panel, "Billing Box")
-        
+
+
+    #PARK TRACK HISTORY TAB RECEIPT FUNCTION
     def ParkTrack_history_tab_panel(self):
         panel = QWidget()
         layout = QVBoxLayout(panel)
         layout.setContentsMargins(5, 10, 5, 10)
-        self.ticket_log = QTableWidget(0, 5)
-        self.ticket_log.setObjectName("ticketLog")
-        self.ticket_log.setHorizontalHeaderLabels(["Target", "Customer", "Time-In", "Time-Out" ,"Paid Fees"])
+        
+        self.ticket_log = QTableWidget(0, 6, objectName="ticketLog")
+        self.ticket_log.setHorizontalHeaderLabels(["Target", "Type", "Customer", "Time-In", "Time-Out", "Paid Fees"])
         self.ticket_log.horizontalHeader().setStretchLastSection(True)
-        lbl_history = QLabel("Session History Record Matrix:")
+        
+        lbl_history = QLabel("Session History Record Matrix:", styleSheet=f"{Styles.TEXT_MUTED} font-weight: bold; font-size: 11px;")
         layout.addWidget(lbl_history)
         layout.addWidget(self.ticket_log)
         self.control_tabs.addTab(panel, "Ledger Log")
-        
+
+
+    
+    #MESSAGE ACTIVITY LOG
     def log_message(self, message):
         timestamp = datetime.now().strftime("%I:%M:%S %p")
         self.activity_log_box.append(f"[{timestamp}] {message}")
 
+
+    
     def update_ui(self):
             self.spot_selector.clear()
             self.active_spot_selector.clear()
