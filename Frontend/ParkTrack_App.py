@@ -94,8 +94,7 @@ class ParkingSystemApp(QMainWindow):
         else:
             print(f"Warning: Stylesheet file '{qss_filename}' not found.")
 
-
-    
+    # BANNER LAYOUT WIDGETS
     def ParkTrack_banner(self):
         banner = QFrame()
         banner.setObjectName("Banner")
@@ -114,14 +113,16 @@ class ParkingSystemApp(QMainWindow):
         banner_layout.addWidget(title)
         banner_layout.addStretch()
         
-        self.total_stat = QLabel(str(len(self.engine.parking_slots)))
+    #-------------------NEW------------------------------    
+        self.total_stat = QLabel("24")
         self.vacant_stat = QLabel("0")
         self.occupied_stat = QLabel("0")
+    #-------------------NEW------------------------------    
         
         stats_configurations = [
             ("Total Spaces", self.total_stat, "white"),
-            ("Available", self.vacant_stat, "#2ecc71"),
-            ("Occupied", self.occupied_stat, "#e74c3c")
+            ("Available", self.vacant_stat, Styles.ACCENT_GREEN.name()),
+            ("Occupied", self.occupied_stat, Styles.ACCENT_RED.name())
         ]
         for text, metric_widget, font_color in stats_configurations:
             box = QFrame()
@@ -136,7 +137,6 @@ class ParkingSystemApp(QMainWindow):
             lbl.setObjectName("lblC")
             
             metric_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            # Reinserted dynamic programmatic colors safely via inline styling overrides
             metric_widget.setStyleSheet(f"color: {font_color}; font-size: 14px; font-weight: bold; background: transparent; border: none;")
             
             box_vbox.addWidget(lbl)
