@@ -1,10 +1,10 @@
-port sys
+import sys
 from datetime import datetime
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, 
     QLabel, QLineEdit, QPushButton, QTableWidget, QTableWidgetItem, 
     QComboBox, QSpinBox, QGridLayout, QFrame, QTextEdit, QScrollArea,
-    QStackedWidget
+    QStackedWidget, QCheckBox
 )
 from PyQt6.QtCore import Qt
 from ParkTrack_Model import ParkingSlotWidget
@@ -19,6 +19,7 @@ class ParkingSystemApp(QMainWindow):
         super().__init__()
         self.setWindowTitle("ParkTrack Parking Management System")
         self.setMinimumSize(1150, 720)
+        
     #-------------------NEW------------------------------    
         self.engine = ParkingEngine(24, 24)
         self.car_filter_status = "All"
@@ -30,6 +31,7 @@ class ParkingSystemApp(QMainWindow):
         self.subtext_labels = []
         self.rate_subtext_labels =[]
     #-------------------NEW------------------------------    
+    
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
         self.main_layout = QHBoxLayout(self.central_widget)
@@ -39,21 +41,22 @@ class ParkingSystemApp(QMainWindow):
         self.left_canvas_container = QWidget()
         self.left_canvas_layout = QVBoxLayout(self.left_canvas_container)
         self.left_canvas_layout.setContentsMargins(0, 0, 0, 0)
-
-    #-------------------NEW------------------------------            
-        # 1. Setup left side grid maps first
+        
+    #-------------------NEW------------------------------    
+        # Setup left side grid maps first
         self.ParkTrack_banner()
         self.ParkTrack_view_switcher_and_maps()
         self.main_layout.addWidget(self.left_canvas_container, stretch=3)
-    #-------------------NEW------------------------------    
-
+        
+        # Setup right sidebar (creates self.spot_selector, self.active_spot_selector, etc.)
         self.right_sidebar_container = QFrame()
         self.right_sidebar_container.setFixedWidth(380)
         self.right_sidebar_container.setObjectName("rSidebar")
         self.right_sidebar_layout = QVBoxLayout(self.right_sidebar_container)
         self.right_sidebar_layout.setContentsMargins(10, 10, 10, 10)
         self.right_sidebar_layout.setSpacing(10)
-        
+    #-------------------NEW------------------------------    
+
         self.control_tabs = QTabWidget()
         
         self.ParkTrack_checkin_tab_panel()
@@ -74,22 +77,25 @@ class ParkingSystemApp(QMainWindow):
         self.main_layout.addWidget(self.right_sidebar_container, stretch=1)
         
     #-------------------NEW------------------------------    
-        #Connect map_stack signal AFTER all widgets are instantiated
+        # Connect map_stack signal AFTER all widgets are instantiated
         self.map_stack.currentChanged.connect(lambda idx: self.update_ui())
+    #-------------------NEW------------------------------    
         
+    #-------------------NEW------------------------------    
         Styles.apply_widget_styles(self)
-        # Populate UI state
+        # 4. Populate UI state
+    #-------------------NEW------------------------------    
         self.update_ui()
-        self.log_message("System loaded successfully.")
-    #-------------------NEW------------------------------
-         
+        self.log_message("System loaded successfully.")         
     def apply_qss(self, qss_filename):
         if os.path.exists(qss_filename):
             with open(qss_filename, "r") as f:
                 self.setStyleSheet(f.read())
         else:
             print(f"Warning: Stylesheet file '{qss_filename}' not found.")
-        
+
+
+    
     def ParkTrack_banner(self):
         banner = QFrame()
         banner.setObjectName("Banner")
