@@ -1,0 +1,208 @@
+
+/* Main Window */
+QWidget {
+    background-color: #F1F5F9;
+    color: #1E293B;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+}
+
+/* Login Card */
+#CardFrame {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+}
+
+/* Logo */
+#LogoBadge {
+    background-color: #1E293B;
+    color: #FACC15;
+    border: none;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Header */
+#title {
+    background-color: transparent;
+    font-size: 26px;
+    font-weight: bold;
+    color: #0F172A;
+}
+
+#Subtitle {
+    background-color: transparent;
+    font-size: 13px;
+    color: #64748B;
+}
+
+/* Field Labels */
+QLabel[class="FieldLabel"] {
+    background-color: transparent;
+    font-size: 12px;
+    font-weight: 700;
+    color: #334155;
+}
+
+
+/* Username and Password Boxes */
+QLineEdit {
+    background-color: #FFFFFF;
+    color: #0F172A;
+
+    border: 1.5px solid #CBD5E1; /* Conflicts with 2px solid above */
+    border-radius: 8px;
+
+    padding: 0px 12px;
+    min-height: 20px;
+    max-height: 20px; /* <--- THIS RESTRICTION BREAKS PADDING/BORDERS */
+
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 13px;
+}
+
+QLineEdit:hover {
+    border-color: #FACC15;
+}
+
+QLineEdit:focus {
+    border-color: #CA8A04;
+}
+
+QLineEdit[error="true"] {
+    border-color: #DC2626;
+    background-color: #FEF2F2;
+}
+
+QCheckBox {
+    background-color: transparent;
+    border: none;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    spacing: 8px;
+}
+
+QCheckBox:hover {
+    color: #CA8A04;
+}
+
+/* General Buttons */
+QPushButton {
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Sign In Button */
+#loginBtn {
+    background-color: #1E293B;
+    color: #FACC15;
+}
+
+#loginBtn:hover {
+    background-color: #0F172A;
+}
+
+#loginBtn:pressed {
+    background-color: #334155;
+}
+
+#loginBtn:disabled {
+    background-color: #64748B;
+    color: #FACC15;
+}
+
+/* Clear Button */
+#clearBtn {
+    background-color: #E2E8F0;
+    color: #334155;
+}
+
+#clearBtn:hover {
+    background-color: #CBD5E1;
+}
+
+#clearBtn:pressed {
+    background-color: #94A3B8;
+}
+
+/* Status Message */
+#status {
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+#status[state="error"] {
+    color: #DC2626;
+}
+
+#status[state="success"] {
+    color: #16A34A;
+}
+
+/* Footer */
+#footerNote {
+    background-color: transparent;
+    font-size: 11px;
+    color: #94A3B8;
+}
+
+/* Success Popup */
+QMessageBox {
+    background-color: #F1F5F9;
+    color: #1E293B;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 13px;
+}
+
+QMessageBox QLabel {
+    background-color: transparent;
+    color: #1E293B;
+}
+
+QMessageBox QPushButton {
+    background-color: #1E293B;
+    color: #FACC15;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 25px;
+    font-weight: bold;
+    min-width: 60px;
+}
+
+QMessageBox QPushButton:hover {
+    background-color: #CA8A04;
+    color: #FFFFFF;
+}
+
+QMessageBox QPushButton:pressed {
+    background-color: #334155;
+    color: #FFFFFF;
+}
+
+
+
+/* Username and Password Boxes */
+QLineEdit {
+    background-color: #FFFFFF;
+    color: #0F172A;
+
+    border: 1.5px solid #CBD5E1;
+    border-radius: 8px;
+
+    padding: 0px 12px;
+    min-height: 20px;
+    max-height: 20px;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 13px;
+}
+
+
+
