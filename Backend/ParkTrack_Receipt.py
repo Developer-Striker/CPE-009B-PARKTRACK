@@ -7,7 +7,7 @@ class Receipt:
         filename = f"ticket_{spot}_{data['customer'].replace(' ', '_')}.txt"
         vehicle_type = data.get("vehicle_type", "Car")
         is_exempt = data.get("is_exempt", False)
-        is_overstay = BillingEngine.is_overstaying(data["Time_in"], checkout_dt, is_exempt)
+        is_overstay = BillingEngine.is_overstaying(data["time_in"], checkout_dt, is_exempt)
         with open(filename, "w", encoding="utf-8") as file:
             file.write("=========================================\n")
             file.write("        PARKING RECEIPT INVOICE         \n")
