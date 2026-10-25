@@ -144,84 +144,104 @@ class ParkingSystemApp(QMainWindow):
             banner_layout.addWidget(box)
             
         self.left_canvas_layout.addWidget(banner)
-        
-    def ParkTrack_parking_map_grid(self):
-        filter_strip = QHBoxLayout()
-        filter_strip.setContentsMargins(5, 5, 5, 0)
-        
-        map_filter = QLabel("Map Filter View Mode:")
-        map_filter.setObjectName("mapFilter")
-        filter_strip.addWidget(map_filter)
-        
-        viewAll_btn = QPushButton("View All")
-        viewAll_btn.setObjectName("viewAll")
-        viewAll_btn.clicked.connect(lambda: self.set_grid_filter("All"))
-        
-        viewAvail_btn = QPushButton("Available")
-        viewAvail_btn.setObjectName("viewAvail")
-        viewAvail_btn.clicked.connect(lambda: self.set_grid_filter("Available"))
-        
-        viewOcc_btn = QPushButton("Occupied")
-        viewOcc_btn.setObjectName("viewOcc")
-        viewOcc_btn.clicked.connect(lambda: self.set_grid_filter("Occupied"))
-        
-        filter_strip.addWidget(viewAll_btn)
-        filter_strip.addWidget(viewAvail_btn)
-        filter_strip.addWidget(viewOcc_btn)
-        filter_strip.addStretch()
-        self.left_canvas_layout.addLayout(filter_strip)
-        
-        scroll_area = QScrollArea()
-        scroll_area.setWidgetResizable(True)
-        scroll_area.setObjectName("scrollArea")
-        
-        grid_frame = QFrame()
-        grid_frame.setObjectName("frame")
-        grid_layout = QGridLayout(grid_frame)
-        grid_layout.setContentsMargins(15, 15, 15, 15)
-        grid_layout.setHorizontalSpacing(15)
-        grid_layout.setVerticalSpacing(0) 
-        
-        spot_counter = 1
-        parking_rows_indices = (0, 2, 3, 5)
-        roadway_rows_indices = (1, 4)
-        
-        for r_idx in parking_rows_indices:
-            for col in range(6):
-                if spot_counter > len(self.engine.parking_slots):
-                    break
-                    
-                spot_label = f"Spot {spot_counter}"
-                
-                slot_card = QFrame()
-                slot_card.setObjectName("slotCard")
-                card_vbox = QVBoxLayout(slot_card)
-                card_vbox.setContentsMargins(4, 4, 4, 4)
-                card_vbox.setSpacing(4)
-                
-                car_widget = ParkingSlotWidget(False, spot_label)
-                card_vbox.addWidget(car_widget)
-                
-                action_btn = QPushButton("Select Slot")
-                action_btn.setObjectName("action")
-                action_btn.clicked.connect(lambda checked, s=spot_label: self.handle_grid_button_click(s))
-                card_vbox.addWidget(action_btn)
-                
-                grid_layout.addWidget(slot_card, r_idx, col)
-                self.slot_ui_elements[spot_label] = {"frame": slot_card, "car": car_widget}
-                
-                spot_counter += 1
 
-        for road_row in roadway_rows_indices:
-            for col in range(6):
-                road_strip = QFrame()
-                road_strip.setFixedHeight(45) 
-                road_strip.setObjectName("roadway")
-                grid_layout.addWidget(road_strip, road_row, col)
+
+    
+    def ParkTrack_view_switcher_and_maps(self):
+        switcher_strip = QHBoxLayout()
+        switcher_strip.setContentsMargins(5, 5, 5, 0)
         
-        scroll_area.setWidget(grid_frame)
-        self.left_canvas_layout.addWidget(scroll_area)
+        lbl_switch = QLabel("Grid Layout View:")
+        lbl_switch.setObjectName("mapFilter")
+        switcher_strip.addWidget(lbl_switch)
         
+        btn_cars_grid = QPushButton("Cars View")
+        btn_cars_grid.setObjectName("viewAll")
+        btn_cars_grid.clicked.connect(lambda: self.switch_grid_view(0))
+        
+        btn_moto_grid = QPushButton("Motorcycles View")
+        btn_moto_grid.setObjectName("viewAll")
+        btn_moto_grid.clicked.connect(lambda: self.switch_grid_view(1))
+        
+        switcher_strip.addWidget(btn_cars_grid)
+        switcher_strip.addWidget(btn_moto_grid)
+        switcher_strip.addStretch()
+        
+        self.left_canvas_layout.addLayout(switcher_strip)
+        
+        self.map_stack = QStackedWidget()
+        
+        # Page 0: Cars View
+        car_page = QWidget()
+        car_layout = QVBoxLayout(car_page)
+        car_layout.setContentsMargins(0, 0, 0, 0)
+        
+        car_filter_strip = QHBoxLayout()
+        car_filter_strip.addWidget(QLabel("Cars Status Filter:", objectName="mapFilter"))
+        
+        car_all_btn = QPushButton("View All", objectName="viewAll")
+        car_all_btn.clicked.connect(lambda: self.set_car_status_filter("All"))
+        car_avail_btn = QPushButton("Available", objectName="viewAvail")
+        car_avail_btn.clicked.connect(lambda: self.set_car_status_filter("Available"))
+        car_occ_btn = QPushButton("Occupied", objectName="viewOcc")
+        car_occ_btn.clicked.connect(lambda: self.set_car_status_filter("Occupied"))
+        
+        car_filter_strip.addWidget(car_all_btn)
+        car_filter_strip.addWidget(car_avail_btn)
+        car_filter_strip.addWidget(car_occ_btn)
+        car_filter_strip.addStretch()
+        car_layout.addLayout(car_filter_strip)
+        
+        car_scroll = QScrollArea(objectName="scrollArea", widgetResizable=True)
+        car_frame = QFrame(objectName="frame")
+        car_grid = QGridLayout(car_frame)
+        car_grid.setContentsMargins(15, 15, 15, 15)
+        car_grid.setHorizontalSpacing(15)
+        car_grid.setVerticalSpacing(0)
+        
+        self.build_grid_layout(car_grid, self.engine.get_car_slots(), self.car_slot_ui_elements, "Car")
+        car_scroll.setWidget(car_frame)
+        car_layout.addWidget(car_scroll)
+        
+        # Page 1: Motorcycles View
+        moto_page = QWidget()
+        moto_layout = QVBoxLayout(moto_page)
+        moto_layout.setContentsMargins(0, 0, 0, 0)
+        
+        moto_filter_strip = QHBoxLayout()
+        moto_filter_strip.addWidget(QLabel("Motorcycle Status Filter:", objectName="mapFilter"))
+        
+        moto_all_btn = QPushButton("View All", objectName="viewAll")
+        moto_all_btn.clicked.connect(lambda: self.set_moto_status_filter("All"))
+        moto_avail_btn = QPushButton("Available", objectName="viewAvail")
+        moto_avail_btn.clicked.connect(lambda: self.set_moto_status_filter("Available"))
+        moto_occ_btn = QPushButton("Occupied", objectName="viewOcc")
+        moto_occ_btn.clicked.connect(lambda: self.set_moto_status_filter("Occupied"))
+        
+        moto_filter_strip.addWidget(moto_all_btn)
+        moto_filter_strip.addWidget(moto_avail_btn)
+        moto_filter_strip.addWidget(moto_occ_btn)
+        moto_filter_strip.addStretch()
+        moto_layout.addLayout(moto_filter_strip)
+        
+        moto_scroll = QScrollArea(objectName="scrollArea", widgetResizable=True)
+        moto_frame = QFrame(objectName="frame")
+        moto_grid = QGridLayout(moto_frame)
+        moto_grid.setContentsMargins(15, 15, 15, 15)
+        moto_grid.setHorizontalSpacing(15)
+        moto_grid.setVerticalSpacing(0)
+        
+        self.build_grid_layout(moto_grid, self.engine.get_moto_slots(), self.moto_slot_ui_elements, "Motorcycle")
+        moto_scroll.setWidget(moto_frame)
+        moto_layout.addWidget(moto_scroll)
+        
+        self.map_stack.addWidget(car_page)
+        self.map_stack.addWidget(moto_page)
+        self.left_canvas_layout.addWidget(self.map_stack)
+    #-------------------NEW------------------------------
+
+
+
     def ParkTrack_checkin_tab_panel(self):
         panel = QWidget()
         layout = QVBoxLayout(panel)
