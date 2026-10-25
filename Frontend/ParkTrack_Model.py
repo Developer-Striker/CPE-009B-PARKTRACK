@@ -20,34 +20,36 @@ class ParkingSlotWidget(QWidget):
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-        
-        color = QColor("#e74c3c") if self.is_occupied else QColor("#2ecc71")
+        if not self.is_occupied:
+            color = QColor("#2ecc71")
+        elif self.is_overstay:
+            color = QColor("#e67e22")
+        else:
+            color = QColor("#e74c3c")
         
         pen = QPen(color, 2)
-        brush = QBrush()
         painter.setPen(pen)
-
-        # Body Outline
-        painter.drawRoundedRect(26, 15, 42, 69, 30, 12)
-
-        # Trunk Outline
-        painter.drawRoundedRect(25, 70, 44, 20, 10, 10)
-
-        # Hood Outline
-        painter.drawRoundedRect(25, 5, 44, 30, 15, 15)
-
-        # Side Rear Mirror (Left) Outline
-        painter.drawLine(QPoint(20, 32), QPoint(25, 28))
-
-        # Side Rear Mirror (Right) Outline
-        painter.drawLine(QPoint(74, 32), QPoint(68, 28))
-
-        # "Inner" Roof Outline
-        brush.setColor(QColor("#2d2d30")) # Hide Excess Lines
-        brush.setStyle(Qt.BrushStyle.SolidPattern)
-        painter.setBrush(brush)
-        painter.drawRoundedRect(32, 27, 30, 48, 30, 5)
+        painter.drawRoundedRect(10, 8, 50, 65, 6, 6)
         
-        painter.setPen(QColor("#ffffff"))
-        painter.setFont(painter.font())
-        painter.drawText(self.rect(), Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignHCenter, self.spot_label)
+        pen.setWidth(1)
+        painter.setPen(pen)
+        if self.vehicle_type == "Motorcycle":
+            painter.drawRoundedRect(22, 20, 26, 25, 2, 2)
+        else:
+            painter.drawRoundedRect(16, 20, 38, 25, 2, 2)
+
+        if self.is_occupied and self.is_overstay:
+            painter.setPen(QColor("#f39c12"))
+            badge_text = "OVERSTAY"
+            font_size = 6
+            
+        else:
+            painter.setPen(QColor("#2ecc71") if not self.is_occupied else QColor("#f1c40f"))
+            badge_text = "MOTO" if self.vehicle_type == "Motorcycle" else "CAR"
+            font_size = 7
+            
+        font = painter.font()
+        font.setPointSize(font_size)
+        font.setBold(True)
+        painter.setFont(font)
+        painter.drawText(10, 20, 50, 25, Qt.AlignmentFlag.AlignCenter, badge_text)
