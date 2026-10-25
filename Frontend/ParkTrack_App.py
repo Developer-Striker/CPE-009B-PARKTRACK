@@ -241,7 +241,8 @@ class ParkingSystemApp(QMainWindow):
         self.left_canvas_layout.addWidget(self.map_stack)
     #-------------------NEW------------------------------
 
-    #SWITCH FUNCTION BETWEEN GRID LAYOUT FOR CAR AND MOTORCYCLE
+    
+    #SWITCH FUNCTION BETWEEN GRID LAYOUT FOR CAR AND MOToRCYCLE
     #-------------------NEW------------------------------    
     def switch_grid_view(self, index):
         self.map_stack.setCurrentIndex(index)
@@ -256,6 +257,8 @@ class ParkingSystemApp(QMainWindow):
         self.update_ui()
     #-------------------NEW------------------------------    
 
+
+    
     # THE GRID LAYOUT USING MATRIX ROWS AND COLUMNS
     #-------------------NEW------------------------------    
     def build_grid_layout(self, grid_layout, slot_items, storage_dict, v_type):
@@ -295,42 +298,57 @@ class ParkingSystemApp(QMainWindow):
                 road_strip.setFixedHeight(45) 
                 grid_layout.addWidget(road_strip, road_row, col)
     #-------------------NEW------------------------------
-    
-    
+
+
     def ParkTrack_checkin_tab_panel(self):
         panel = QWidget()
         layout = QVBoxLayout(panel)
         layout.setContentsMargins(10, 15, 10, 15)
         layout.setSpacing(12)
         
-        lbl_section = QLabel("Space Allocation Entry")
-        lbl_section.setObjectName("Allocation")
+        lbl_section = QLabel("Space Allocation Entry", objectName="Allocation")
         layout.addWidget(lbl_section)
         
-        lbl_plate = QLabel("Customer Name / Plate Ref:")
-        lbl_plate.setProperty("class", "mutedLabel")
-        layout.addWidget(lbl_plate)
+        self.lbl_plate = QLabel("Plate Number Reference: ")
+        self.subtext_labels.append(self.lbl_plate)
+        layout.addWidget(self.lbl_plate)
         
-        self.plateNum = QLineEdit()
-        self.plateNum.setObjectName("panelInput")
+        self.plateNum = QLineEdit(objectName="panelInput")
         layout.addWidget(self.plateNum)
         
-        lbl_spot = QLabel("Target Parking Grid Code:")
-        lbl_spot.setProperty("class", "mutedLabel")
+        lbl_type = QLabel("Vehicle Type: ")
+        self.subtext_labels.append(lbl_type)
+        layout.addWidget(lbl_type)
+        
+    #-------------------NEW------------------------------    
+        self.vehicle_type_selector = QComboBox(objectName="panelCombo")
+        self.vehicle_type_selector.addItems(["Car", "Motorcycle"])
+        self.vehicle_type_selector.currentTextChanged.connect(self.on_vehicle_type_changed)
+        layout.addWidget(self.vehicle_type_selector)
+    #-------------------NEW------------------------------    
+        
+        lbl_spot = QLabel("Target Parking Spot Code: ")
+        self.subtext_labels.append(lbl_spot)
         layout.addWidget(lbl_spot)
         
-        self.spot_selector = QComboBox()
-        self.spot_selector.setObjectName("panelCombo")
+        self.spot_selector = QComboBox(objectName="panelCombo")
         layout.addWidget(self.spot_selector)
         
-        assign_btn = QPushButton("Execute Gate Check-in")
-        assign_btn.setObjectName("assign")
+        #----------------NEW----------------------
+        self.chk_exempt = QCheckBox("Cinema / Overnight Exempt (No Overstay Fee)")
+        self.chk_exempt.setObjectName("overstay")
+        layout.addWidget(self.chk_exempt)
+        #----------------NEW----------------------
+        
+        assign_btn = QPushButton("Execute Gate Check-in", objectName="assign")
         assign_btn.clicked.connect(self.assign_spot)
         layout.addWidget(assign_btn)
         
         layout.addStretch()
-        self.control_tabs.addTab(panel, "Check-In")
-      
+        self.control_tabs.addTab(panel, "Check In")
+
+
+    
     def ParkTrack_billing_tab_panel(self):
         panel = QWidget()
         layout = QVBoxLayout(panel)
