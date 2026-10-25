@@ -577,35 +577,35 @@ class ParkingSystemApp(QMainWindow):
         self.plateNum.clear()
         self.update_ui()
 
-
-    
+    #RECEIPT PROCESSING AND DATA STORYING FOR HISTORY TAB
     def process_timeout(self):
         selected_spot = self.active_spot_selector.currentText()
         if not selected_spot:
             Dialogs.show_warning(self, "Selection Error", "No active track selected for processing.")
             return
+
         spot_data = self.engine.get_slot_data(selected_spot)
         checkout_time = datetime.now()
         
         hours_parked, total_bill = BillingEngine.calculate_bill(
-            spot_data["time_in"],
-            checkout_time,
-            self.base_rate_spin.value(),
-            self.hourly_rate_spin.value()
+            spot_data["time_in"], 
+            checkout_time, 
+            self.base_rate_spin.value(), 
+            self.hourly_rate_spin.value(),
+            is_exempt=spot_data.get("is_exempt", False)
         )
-        
+
         row_count = self.ticket_log.rowCount()
         self.ticket_log.insertRow(row_count)
         self.ticket_log.setItem(row_count, 0, QTableWidgetItem(selected_spot))
-        self.ticket_log.setItem(row_count, 1, QTableWidgetItem(spot_data["customer"]))
-        self.ticket_log.setItem(row_count, 2, QTableWidgetItem(spot_data["time_in"].strftime("%I:%M:%S %p")))
-        self.ticket_log.setItem(row_count, 3, QTableWidgetItem(checkout_time.strftime("%I:%M:%S %p")))
-        self.ticket_log.setItem(row_count, 4, QTableWidgetItem(f"₱{total_bill:.2f}"))
-        
+        self.ticket_log.setItem(row_count, 1, QTableWidgetItem(spot_data.get("vehicle_type", "Car")))
+        self.ticket_log.setItem(row_count, 2, QTableWidgetItem(spot_data["customer"]))
+        self.ticket_log.setItem(row_count, 3, QTableWidgetItem(spot_data["time_in"].strftime("%I:%M:%S %p")))
+        self.ticket_log.setItem(row_count, 4, QTableWidgetItem(checkout_time.strftime("%I:%M:%S %p"))) 
+        self.ticket_log.setItem(row_count, 5, QTableWidgetItem(f"₱{total_bill:.2f}"))
+
         Receipt.export_ticket_receipt(selected_spot, spot_data, checkout_time, hours_parked, total_bill)
-        
+
         self.log_message(f"Released space {selected_spot}. Transaction payment settled: ₱{total_bill:.2f}")
         self.engine.release_spot(selected_spot)
         self.update_ui()
-        
-        
