@@ -146,7 +146,8 @@ class ParkingSystemApp(QMainWindow):
         self.left_canvas_layout.addWidget(banner)
 
 
-    
+    # BUTTON FILTER LAYOUT FOR CAR AND MORTORCYCLE GRID LAYOUT
+    # AND TRANSITIONING VIEW BETWEEN GRID LAYOUTS
     def ParkTrack_view_switcher_and_maps(self):
         switcher_strip = QHBoxLayout()
         switcher_strip.setContentsMargins(5, 5, 5, 0)
@@ -240,8 +241,62 @@ class ParkingSystemApp(QMainWindow):
         self.left_canvas_layout.addWidget(self.map_stack)
     #-------------------NEW------------------------------
 
+    #SWITCH FUNCTION BETWEEN GRID LAYOUT FOR CAR AND MOTORCYCLE
+    #-------------------NEW------------------------------    
+    def switch_grid_view(self, index):
+        self.map_stack.setCurrentIndex(index)
+        if index == 0:
+            self.vehicle_type_selector.blockSignals(True)
+            self.vehicle_type_selector.setCurrentText("Car")
+            self.vehicle_type_selector.blockSignals(False)
+        else:
+            self.vehicle_type_selector.blockSignals(True)
+            self.vehicle_type_selector.setCurrentText("Motorcycle")
+            self.vehicle_type_selector.blockSignals(False)
+        self.update_ui()
+    #-------------------NEW------------------------------    
 
+    # THE GRID LAYOUT USING MATRIX ROWS AND COLUMNS
+    #-------------------NEW------------------------------    
+    def build_grid_layout(self, grid_layout, slot_items, storage_dict, v_type):
+        spot_counter = 1
+        parking_rows = (0, 2, 3, 5)
+        roadway_rows = (1, 4)
+        
+        items_list = list(slot_items)
+        
+        for r_idx in parking_rows:
+            for col in range(6):
+                if spot_counter > len(items_list):
+                    break
+                    
+                spot_label, _ = items_list[spot_counter - 1]
+                
+                slot_card = QFrame(objectName="slotCard")
+                card_vbox = QVBoxLayout(slot_card)
+                card_vbox.setContentsMargins(4, 4, 4, 4)
+                card_vbox.setSpacing(4)
+                
+                car_widget = ParkingSlotWidget(False, spot_label, v_type)
+                card_vbox.addWidget(car_widget)
+                
+                action_btn = QPushButton("Select Slot", objectName="action")
+                action_btn.clicked.connect(lambda checked, s=spot_label: self.handle_grid_button_click(s))
+                card_vbox.addWidget(action_btn)
+                
+                grid_layout.addWidget(slot_card, r_idx, col)
+                storage_dict[spot_label] = {"frame": slot_card, "car": car_widget}
+                
+                spot_counter += 1
 
+        for road_row in roadway_rows:
+            for col in range(6):
+                road_strip = QFrame(objectName="roadway")
+                road_strip.setFixedHeight(45) 
+                grid_layout.addWidget(road_strip, road_row, col)
+    #-------------------NEW------------------------------
+    
+    
     def ParkTrack_checkin_tab_panel(self):
         panel = QWidget()
         layout = QVBoxLayout(panel)
@@ -319,6 +374,7 @@ class ParkingSystemApp(QMainWindow):
         layout.addWidget(checkout_btn)
         layout.addStretch()
         self.control_tabs.addTab(panel, "Billing Box")
+        
     def ParkTrack_history_tab_panel(self):
         panel = QWidget()
         layout = QVBoxLayout(panel)
@@ -331,27 +387,11 @@ class ParkingSystemApp(QMainWindow):
         layout.addWidget(lbl_history)
         layout.addWidget(self.ticket_log)
         self.control_tabs.addTab(panel, "Ledger Log")
+        
     def log_message(self, message):
         timestamp = datetime.now().strftime("%I:%M:%S %p")
         self.activity_log_box.append(f"[{timestamp}] {message}")
-    def set_grid_filter(self, filter_mode):
-        self.current_filter = filter_mode
-        self.log_message(f"Filtering map layout view constraints to: {filter_mode}")
-        self.update_ui()
-    def handle_grid_button_click(self, spot_label):
-        if not self.engine.is_occupied(spot_label):
-            self.control_tabs.setCurrentIndex(0)
-            index = self.spot_selector.findText(spot_label)
-            if index >= 0:
-                self.spot_selector.setCurrentIndex(index)
-            self.plateNum.setFocus()
-            self.log_message(f"Focused empty {spot_label} allocation workspace node.")
-        else:
-            self.control_tabs.setCurrentIndex(1)
-            index = self.active_spot_selector.findText(spot_label)
-            if index >= 0:
-                self.active_spot_selector.setCurrentIndex(index)
-            self.log_message(f"Focused occupied data node profile on {spot_label}.")
+
     def update_ui(self):
             self.spot_selector.clear()
             self.active_spot_selector.clear()
@@ -373,6 +413,7 @@ class ParkingSystemApp(QMainWindow):
                     ui["frame"].setVisible(self.current_filter != "Available")
             self.vacant_stat.setText(str(vacant_count))
             self.occupied_stat.setText(str(occupied_count))
+        
     def assign_spot(self):
         customer = self.plateNum.text().strip()
         selected_spot = self.spot_selector.currentText()
