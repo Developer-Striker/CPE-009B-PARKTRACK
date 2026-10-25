@@ -1,12 +1,14 @@
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPainter, QPen, QColor
+from PyQt6.QtGui import QPainter, QPen, QColor, QFont
 
 class ParkingSlotWidget(QWidget):
-    def __init__(self, is_occupied, spot_label, parent=None):
+    def __init__(self, is_occupied, spot_label, vehicle_type="Car", is_overstay=False, parent=None):
         super().__init__(parent)
         self.is_occupied = is_occupied
         self.spot_label = spot_label
+        self.vehicle_type = vehicle_type
+        self.is_overstay = is_overstay
         self.setMinimumSize(70, 95)
         
     def set_occupied(self, state):
