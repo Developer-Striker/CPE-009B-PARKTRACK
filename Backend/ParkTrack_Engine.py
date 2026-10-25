@@ -12,7 +12,7 @@ class ParkingEngine:
         return self.get_slot_data(spot_label) is not None
     
     def allocate_spot(self, spot_label, customer_data):
-        if spot_label.startwith("Moto):
+        if spot_label.startwith("Moto"):
             self.moto_slots[spot_label] = customer_data
         else:
             self.car_slots[spot_label] = customer_data
