@@ -19,7 +19,7 @@ class ParkingSlotWidget(QWidget):
         
         color = QColor("#e74c3c") if self.is_occupied else QColor("#2ecc71")
         
-        pen = QPainter(color, 2)
+        pen = QPen(color, 2)
         painter.setPen(pen)
         painter.drawRoundedRect(10, 8, 50, 65, 6, 6)
         
