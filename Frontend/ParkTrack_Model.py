@@ -19,13 +19,30 @@ class ParkingSlotWidget(QWidget):
         
         color = QColor("#e74c3c") if self.is_occupied else QColor("#2ecc71")
         
-        pen = QPainter(color, 2)
+        pen = QPen(color, 2)
+        brush = QBrush()
         painter.setPen(pen)
-        painter.drawRoundedRect(10, 8, 50, 65, 6, 6)
-        
-        pen.setWidth(1)
-        painter.setPen(pen)
-        painter.drawRoundedRect(16, 20, 38, 25, 2, 2)
+
+        # Body Outline
+        painter.drawRoundedRect(26, 15, 42, 69, 30, 12)
+
+        # Trunk Outline
+        painter.drawRoundedRect(25, 70, 44, 20, 10, 10)
+
+        # Hood Outline
+        painter.drawRoundedRect(25, 5, 44, 30, 15, 15)
+
+        # Side Rear Mirror (Left) Outline
+        painter.drawLine(QPoint(20, 32), QPoint(25, 28))
+
+        # Side Rear Mirror (Right) Outline
+        painter.drawLine(QPoint(74, 32), QPoint(68, 28))
+
+        # "Inner" Roof Outline
+        brush.setColor(QColor("#2d2d30")) # Hide Excess Lines
+        brush.setStyle(Qt.BrushStyle.SolidPattern)
+        painter.setBrush(brush)
+        painter.drawRoundedRect(32, 27, 30, 48, 30, 5)
         
         painter.setPen(QColor("#ffffff"))
         painter.setFont(painter.font())
