@@ -53,3 +53,10 @@ class ParkingSlotWidget(QWidget):
         font.setBold(True)
         painter.setFont(font)
         painter.drawText(10, 20, 50, 25, Qt.AlignmentFlag.AlignCenter, badge_text)
+
+        painter.setPen(QColor("#ffffff"))
+        font = painter.font()
+        font.setPointSize(8)
+        font.setBold(False)
+        painter.setFont(font)
+        painter.drawText(self.rect(), Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignHCenter, self.spot_label)
