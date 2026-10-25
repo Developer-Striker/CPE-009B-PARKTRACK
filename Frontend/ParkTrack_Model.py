@@ -11,8 +11,10 @@ class ParkingSlotWidget(QWidget):
         self.is_overstay = is_overstay
         self.setMinimumSize(70, 95)
         
-    def set_occupied(self, state):
+    def set_occupied(self, state, vehicle_type="Car", is_overstay=False): 
         self.is_occupied = state
+        self.vehicle_type = vehicle_type
+        self.is_overstay = is_overstay
         self.update()
         
     def paintEvent(self, event):
