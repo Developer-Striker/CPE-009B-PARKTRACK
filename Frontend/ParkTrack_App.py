@@ -465,30 +465,89 @@ class ParkingSystemApp(QMainWindow):
             self.log_message(f"Focused occupied data node profile on {spot_label}.")
     #-------------------NEW------------------------------
 
-
-    
+    #UPDATING UI FOR OVERSTAY, TRANSITIONING, AND STRUCTURALIZING TABS
     def update_ui(self):
-            self.spot_selector.clear()
-            self.active_spot_selector.clear()
-            vacant_count = 0
-            occupied_count = 0
-            for spot_label, data in self.engine.get_all_slots():
-                ui = self.slot_ui_elements.get(spot_label)
-                if not ui:
-                    continue
-                if data is None:
-                    vacant_count += 1
-                    self.spot_selector.addItem(spot_label)
-                    ui["car"].set_occupied(False)
-                    ui["frame"].setVisible(self.current_filter != "Occupied")
-                else:
-                    occupied_count += 1
-                    self.active_spot_selector.addItem(spot_label)
-                    ui["car"].set_occupied(True)
-                    ui["frame"].setVisible(self.current_filter != "Available")
-            self.vacant_stat.setText(str(vacant_count))
-            self.occupied_stat.setText(str(occupied_count))
+        self.spot_selector.clear()
+        self.active_spot_selector.clear()
         
+        car_vacant = 0
+        car_occupied = 0
+        moto_vacant = 0
+        moto_occupied = 0
+        
+    #-------------------NEW------------------------------    
+        selected_type = self.vehicle_type_selector.currentText()
+    #-------------------NEW------------------------------    
+        
+    #-------------------NEW------------------------------    
+        # Update Car Grid UI
+        for spot_label, data in self.engine.get_car_slots():
+            ui = self.car_slot_ui_elements.get(spot_label)
+            if not ui:
+                continue
+            
+            v_type = "Car"
+            
+            if data is None:
+                car_vacant += 1
+                if selected_type == "Car":
+                    self.spot_selector.addItem(spot_label)
+                ui["car"].set_occupied(False, v_type, is_overstay=False)
+                ui["frame"].setVisible(self.car_filter_status != "Occupied")
+            else:
+                car_occupied += 1
+                self.active_spot_selector.addItem(spot_label)
+                
+                #-----------------NEW--------------------
+                is_exempt = data.get("is_exempt", False)
+                is_overstay = BillingEngine.is_overstaying(data["time_in"], datetime.now(), is_exempt)
+
+                ui["car"].set_occupied(True, v_type, is_overstay=is_overstay)
+                ui["frame"].setVisible(self.car_filter_status != "Available")
+                #-----------------NEW--------------------
+    #-------------------NEW------------------------------    
+
+    #-------------------NEW------------------------------    
+        # Update Motorcycle Grid UI
+        for spot_label, data in self.engine.get_moto_slots():
+            ui = self.moto_slot_ui_elements.get(spot_label)
+            if not ui:
+                continue
+
+            v_type = "Motorcycle"
+            
+            if data is None:
+                moto_vacant += 1
+                if selected_type == "Motorcycle":
+                    self.spot_selector.addItem(spot_label)
+                ui["car"].set_occupied(False, v_type, is_overstay=False)
+                ui["frame"].setVisible(self.moto_filter_status != "Occupied")
+            else:
+                moto_occupied += 1
+                self.active_spot_selector.addItem(spot_label)
+                
+                #-----------------NEW--------------------
+                is_exempt = data.get("is_exempt", False)
+                is_overstay = BillingEngine.is_overstaying(data["time_in"], datetime.now(), is_exempt)
+
+                ui["car"].set_occupied(True, v_type, is_overstay=is_overstay)
+                ui["frame"].setVisible(self.moto_filter_status != "Available")
+                #-----------------NEW--------------------
+    #-------------------NEW------------------------------    
+
+    #-------------------NEW------------------------------    
+        # Update Banner Stats based ONLY on active grid view
+        if self.map_stack.currentIndex() == 0:  # Cars View
+            self.total_stat.setText(str(len(self.engine.car_slots)))
+            self.vacant_stat.setText(str(car_vacant))
+            self.occupied_stat.setText(str(car_occupied))
+        else:  # Motorcycles View
+            self.total_stat.setText(str(len(self.engine.moto_slots)))
+            self.vacant_stat.setText(str(moto_vacant))
+            self.occupied_stat.setText(str(moto_occupied))
+    #-------------------NEW------------------------------
+
+
     def assign_spot(self):
         customer = self.plateNum.text().strip()
         selected_spot = self.spot_selector.currentText()
@@ -506,7 +565,9 @@ class ParkingSystemApp(QMainWindow):
         self.log_message(f"Allocated {selected_spot} successfully to client: {customer}")
         self.plateNum.clear()
         self.update_ui()
-        
+
+
+    
     def process_timeout(self):
         selected_spot = self.active_spot_selector.currentText()
         if not selected_spot:
