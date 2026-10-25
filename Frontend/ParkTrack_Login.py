@@ -15,7 +15,7 @@ from PyQt6.QtGui import QColor
 def load_qss():
     file_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
-        "style.qss"
+        "ParkTrack_Login.qss"
     )
 
     with open(file_path, "r", encoding="utf-8") as file:
@@ -265,7 +265,7 @@ class EmployeeLoginWindow(QWidget):
 
             self.status.setText("Login successful!")
 
-            self.show_success_popup()
+            # self.show_success_popup()
 
             if self.on_login_success:
                 self.on_login_success()
@@ -310,13 +310,4 @@ class EmployeeLoginWindow(QWidget):
         self.login_btn.setEnabled(True)
         self.login_btn.setText("Sign In")
 
-        self.username.setFocus()
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    login_window = EmployeeLoginWindow()
-    login_window.show()
-
-    sys.exit(app.exec())
+        self.username.setFocus() 
