@@ -4,7 +4,7 @@ class Styles:
     # Color Constants used for QPainter/Canvas or dynamic logic
     BACKGROUND_COLOR = "#2d2d30"
     SIDEBAR_COLOR = "#3e3e42"
-    TERMINAL_COLOR = "#1e1e1e"
+    TERMINAL_COLOR = "#0D1117"
     BORDER_COLOR = "#555"
     BORDER_DARK = "#444"
     ROAD_COLOR = "#282828"
@@ -13,11 +13,11 @@ class Styles:
     TEXT_MUTED = "color: #aaa; border: none;"
     TEXT_LIGHT_GRAY = "color: #ccc; border: none;"
     
-    ACCENT_GREEN = QColor("#2ecc71")
-    ACCENT_RED = QColor("#e74c3c")
-    ACCENT_GOLD = QColor("#f1c40f")
-    ACCENT_BLUE = QColor("#2980b9")
-    ACCENT_GRAY = QColor("#7f8c8d")
+    ACCENT_GREEN = QColor("#8EDFB0")
+    ACCENT_RED = QColor("#e3a59e")
+    ACCENT_GOLD = QColor("#fad96d")
+    ACCENT_BLUE = QColor("#74b9e4")
+    ACCENT_GRAY = QColor("#bdc3c7")
     
     @staticmethod
     def apply_widget_styles(app_window):
