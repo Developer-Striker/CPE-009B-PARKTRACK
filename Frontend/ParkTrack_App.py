@@ -547,10 +547,12 @@ class ParkingSystemApp(QMainWindow):
             self.occupied_stat.setText(str(moto_occupied))
     #-------------------NEW------------------------------
 
-
+    #ALLOCATION FUNCTION DIALOGS AND ASSIGNING DATA FOR RECEIPT.
     def assign_spot(self):
         customer = self.plateNum.text().strip()
         selected_spot = self.spot_selector.currentText()
+        selected_type = self.vehicle_type_selector.currentText()
+        
         if not customer:
             Dialogs.show_warning(self, "Input Error", "Please provide a valid plate descriptor string sequence.")
             return
@@ -560,9 +562,18 @@ class ParkingSystemApp(QMainWindow):
         
         self.engine.allocate_spot(selected_spot, {
             "customer": customer,
+        #----------------NEW----------------------
+            "vehicle_type": selected_type,
+            "is_exempt": self.chk_exempt.isChecked(),
+        #----------------NEW----------------------
             "time_in": datetime.now()
         })
-        self.log_message(f"Allocated {selected_spot} successfully to client: {customer}")
+        
+        #----------------NEW----------------------
+        self.chk_exempt.setChecked(False)
+        #----------------NEW----------------------
+        
+        self.log_message(f"Allocated {selected_spot} successfully to client ({selected_type}): {customer}")
         self.plateNum.clear()
         self.update_ui()
 
