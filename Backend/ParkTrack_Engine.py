@@ -4,7 +4,7 @@ class ParkingEngine:
         self.moto_slots = {f"Moto Spot {i}": None for i in range(1, total_moto_spots +1)}
     
     def get_slot_data(self, spot_label):
-        if spot_label.startwith("Moto"):
+        if spot_label.startswith("Moto"):
             return self.moto_slots.get(spot_label)
         return self.car_slots.get(spot_label)
     
@@ -12,7 +12,7 @@ class ParkingEngine:
         return self.get_slot_data(spot_label) is not None
     
     def allocate_spot(self, spot_label, customer_data):
-        if spot_label.startwith("Moto"):
+        if spot_label.startswith("Moto"):
             self.moto_slots[spot_label] = customer_data
         else:
             self.car_slots[spot_label] = customer_data
