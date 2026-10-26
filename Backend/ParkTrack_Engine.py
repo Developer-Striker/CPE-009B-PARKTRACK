@@ -1,5 +1,5 @@
 class ParkingEngine:
-    def __init__ (self, total_spots=24, total_moto_spots=24):
+    def __init__ (self, total_car_spots=24, total_moto_spots=24):
         self.car_slots = {f"Spot {i}": None for i in range(1, total_car_spots + 1)}
         self.moto_slots = {f"Moto Spot {i}": None for i in range(1, total_moto_spots +1)}
     
