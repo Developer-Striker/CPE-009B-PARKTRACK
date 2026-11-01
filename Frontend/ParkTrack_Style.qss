@@ -170,18 +170,25 @@ QPushButton#assign {
     border: none;
 }
 
-QLabel#Allocation {
-    color: #f1c40f;
+/* Combined all QLabel Tabs */
+QLabel#Allocation, QLabel#section, QLabel#section2 {
+    color: #ffffff;
     font-size: 13px;
     font-weight: bold;
     border: none;
 }
 
-QLabel#section {
-    color: #e74c3c;
-    font-size: 13px;
-    font-weight: bold;
+/* NEW QPushButton */
+QPushButton#Theme {
+    background: transparent;
+    background-color: transparent;
     border: none;
+    padding: 4px 8px;
+}
+
+QPushButton#Theme:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
 }
 
 QFrame#rate {
@@ -234,5 +241,3 @@ QTextEdit#activityLogBox {
     font-size: 14px;
     border-radius: 4px;
 }
-
-

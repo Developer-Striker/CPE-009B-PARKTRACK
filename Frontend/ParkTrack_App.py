@@ -1,10 +1,14 @@
 import sys
+import os
 from datetime import datetime
+from PyQt6.QtCore import (
+    Qt, QPropertyAnimation, QEasingCurve
+)
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, 
     QLabel, QLineEdit, QPushButton, QTableWidget, QTableWidgetItem, 
     QComboBox, QSpinBox, QGridLayout, QFrame, QTextEdit, QScrollArea,
-    QStackedWidget, QCheckBox
+    QStackedWidget, QCheckBox, QApplication
 )
 from PyQt6.QtCore import Qt
 from ParkTrack_Model import ParkingSlotWidget
@@ -62,6 +66,9 @@ class ParkingSystemApp(QMainWindow):
         self.ParkTrack_checkin_tab_panel()
         self.ParkTrack_billing_tab_panel()
         self.ParkTrack_history_tab_panel()
+        # New Widget
+        self.ParkTrack_theme_toggle()
+        
         self.right_sidebar_layout.addWidget(self.control_tabs, stretch=1)
         
         log_title = QLabel("System Activity Log")
@@ -82,7 +89,7 @@ class ParkingSystemApp(QMainWindow):
     #-------------------NEW------------------------------    
         
     #-------------------NEW------------------------------    
-        Styles.apply_widget_styles(self)
+        # Styles.apply_widget_styles(self)
         # 4. Populate UI state
     #-------------------NEW------------------------------    
         self.update_ui()
@@ -150,7 +157,7 @@ class ParkingSystemApp(QMainWindow):
     # AND TRANSITIONING VIEW BETWEEN GRID LAYOUTS
     def ParkTrack_view_switcher_and_maps(self):
         switcher_strip = QHBoxLayout()
-        switcher_strip.setContentsMargins(5, 5, 5, 0)
+        switcher_strip.setContentsMargins(0, 0, 0, 0)
         
         lbl_switch = QLabel("Grid Layout View:")
         lbl_switch.setObjectName("mapFilter")
@@ -257,8 +264,6 @@ class ParkingSystemApp(QMainWindow):
         self.update_ui()
     #-------------------NEW------------------------------    
 
-
-    
     # THE GRID LAYOUT USING MATRIX ROWS AND COLUMNS
     #-------------------NEW------------------------------    
     def build_grid_layout(self, grid_layout, slot_items, storage_dict, v_type):
@@ -283,7 +288,7 @@ class ParkingSystemApp(QMainWindow):
                 car_widget = ParkingSlotWidget(False, spot_label, v_type)
                 card_vbox.addWidget(car_widget)
                 
-                action_btn = QPushButton("Select Slot", objectName="action")
+                action_btn = QPushButton()
                 action_btn.clicked.connect(lambda checked, s=spot_label: self.handle_grid_button_click(s))
                 card_vbox.addWidget(action_btn)
                 
@@ -404,11 +409,54 @@ class ParkingSystemApp(QMainWindow):
         self.ticket_log = QTableWidget(0, 6, objectName="ticketLog")
         self.ticket_log.setHorizontalHeaderLabels(["Target", "Type", "Customer", "Time-In", "Time-Out", "Paid Fees"])
         self.ticket_log.horizontalHeader().setStretchLastSection(True)
-        
-        lbl_history = QLabel("Session History Record Matrix:", styleSheet=f"{Styles.TEXT_MUTED} font-weight: bold; font-size: 11px;")
+
+        ## styleSheet was moved to ParkTrack_Style.qss
+        # lbl_history = QLabel("Session History Record Matrix:", styleSheet=f"{Styles.TEXT_MUTED} font-weight: bold; font-size: 11px;")
+        lbl_history = QLabel("Session History Record Matrix:", objectName="section2")
         layout.addWidget(lbl_history)
         layout.addWidget(self.ticket_log)
         self.control_tabs.addTab(panel, "Ledger Log")
+
+    def apply_qss(self, qss_filename):
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        qss_path = os.path.join(base_dir, qss_filename)
+        
+        if os.path.exists(qss_path):
+            with open(qss_path, "r", encoding="utf-8") as f:
+                self.setStyleSheet(f.read())
+        else:
+            print(f"Warning: Stylesheet file '{qss_path}' not found.")
+
+    #PARK TRACK THEME DISPLAY TOGGLE (NEAR CONTROL TABS)
+    def ParkTrack_theme_toggle(self):
+        self.toggle_btn = QPushButton("Moon Emoji 🌙", objectName="Theme")
+        self.toggle_btn.setFlat(True)
+        self.toggle_btn.clicked.connect(self.how_theme_toggle)
+        self.control_tabs.setCornerWidget(self.toggle_btn, Qt.Corner.TopRightCorner)
+
+    def how_theme_toggle(self, qss_filename):
+        if self.toggle_btn.text() == "Moon Emoji 🌙":
+            self.toggle_btn.setText("Sun Emoji ☀️")
+            style_name = "ParkTrack_LightStyle.qss"
+        else:
+            self.toggle_btn.setText("Moon Emoji 🌙")
+            style_name = "ParkTrack_Style.qss"
+
+        self.apply_qss(style_name)
+
+    def apply_qss(self, qss_filename):
+        app = QApplication.instance()
+        if not app:
+            return
+        
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        qss_path = os.path.join(base_dir, qss_filename)
+
+        if os.path.exists(qss_path):
+            with open(qss_path, "r", encoding="utf-8") as f:
+                app.setStyleSheet(f.read())
+        else:
+            print(f"Warning: Stylesheet file '{qss_filename}' not found.")
 
 
     
@@ -609,3 +657,18 @@ class ParkingSystemApp(QMainWindow):
         self.log_message(f"Released space {selected_spot}. Transaction payment settled: ₱{total_bill:.2f}")
         self.engine.release_spot(selected_spot)
         self.update_ui()
+
+        # Fade in animation
+        def init_animations(self):
+            self.setWindowOpacity(0.0)
+
+            self.fade = QPropertyAnimation(
+                self, b"windowOpacity"
+            )
+            self.fade.setDuration(800)
+            self.fade.setStartValue(0.0)
+            self.fade.setEndValue(1.0)
+            self.fade.setEasingCurve(
+                QEasingCurve.Type.InOutQuad
+            )
+            self.fade.start()
