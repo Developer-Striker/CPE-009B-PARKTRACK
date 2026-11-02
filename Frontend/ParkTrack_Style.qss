@@ -220,7 +220,7 @@ QTableWidget#ticketLog {
 }
 
 QHeaderView::section {
-    background-color: ##2B3036;
+    background-color: #2B3036;
     color: #ADBAC7;
     padding: 6px;
     border: 1px solid #373E47;
