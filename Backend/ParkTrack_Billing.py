@@ -1,7 +1,7 @@
 from datetime import datetime, time
 
 class BillingEngine:
-    mall_closing_time = time (15, 28)
+    mall_closing_time = time (22, 00)
     overstay_fee = 150.0
     
     @staticmethod
