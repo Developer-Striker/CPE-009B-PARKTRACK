@@ -1,6 +1,5 @@
 import sys
 import os
-
 from PyQt6.QtCore import (
     Qt, QPropertyAnimation, QEasingCurve, QPoint, QTimer
 )
@@ -257,7 +256,7 @@ class EmployeeLoginWindow(QWidget):
         self.login_btn.setEnabled(True)
         self.login_btn.setText("Sign In")
 
-        if user == "group 4" and pw == "1234":
+        if user == "1" and pw == "1":
             self.set_style_property(
                 self.username, "error", False
             )
