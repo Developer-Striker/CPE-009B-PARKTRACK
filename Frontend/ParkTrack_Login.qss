@@ -1,7 +1,7 @@
 
 /* Main Window */
 QWidget {
-    background-color: #F1F5F9;
+    background-color: #1e1e1e;
     color: #1E293B;
     font-family: "Segoe UI", Arial, sans-serif;
     font-size: 14px;
@@ -9,7 +9,7 @@ QWidget {
 
 /* Login Card */
 #CardFrame {
-    background-color: #FFFFFF;
+    background-color: #CBD8E3;
     border: 1px solid #E2E8F0;
     border-radius: 16px;
 }
@@ -124,7 +124,7 @@ QPushButton {
 }
 
 #clearBtn:hover {
-    background-color: #CBD5E1;
+    background-color: #7f8c8d;
 }
 
 #clearBtn:pressed {
@@ -139,11 +139,11 @@ QPushButton {
 }
 
 #status[state="error"] {
-    color: #DC2626;
+    color: #e74c3c;
 }
 
 #status[state="success"] {
-    color: #16A34A;
+    color: #8EDFB0;
 }
 
 /* Footer */
