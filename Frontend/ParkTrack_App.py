@@ -1,6 +1,7 @@
 import sys
 import os
 from datetime import datetime
+from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import (
     Qt, QPropertyAnimation, QEasingCurve
 )
@@ -8,7 +9,7 @@ from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, 
     QLabel, QLineEdit, QPushButton, QTableWidget, QTableWidgetItem, 
     QComboBox, QSpinBox, QGridLayout, QFrame, QTextEdit, QScrollArea,
-    QStackedWidget, QCheckBox, QApplication
+    QStackedWidget, QCheckBox, QApplication, QToolTip
 )
 from PyQt6.QtCore import Qt
 from ParkTrack_Model import ParkingSlotWidget
@@ -23,6 +24,7 @@ class ParkingSystemApp(QMainWindow):
         super().__init__()
         self.setWindowTitle("ParkTrack Parking Management System")
         self.setMinimumSize(1150, 720)
+        self.init_animations()
         
     #-------------------NEW------------------------------    
         self.engine = ParkingEngine(24, 24)
@@ -34,6 +36,8 @@ class ParkingSystemApp(QMainWindow):
         
         self.subtext_labels = []
         self.rate_subtext_labels =[]
+        # Setup right sidebar (creates self.spot_selector, self.active_spot_selector, etc.)
+        # Setup left side grid maps
     #-------------------NEW------------------------------    
     
         self.central_widget = QWidget()
@@ -108,12 +112,17 @@ class ParkingSystemApp(QMainWindow):
         banner.setFixedHeight(70)
         banner_layout = QHBoxLayout(banner)
         banner_layout.setContentsMargins(15, 0, 15, 0)
-        
-        p_logo = QLabel("P")
-        p_logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        p_logo.setFixedSize(40, 40)
-        p_logo.setObjectName("Logo")
-        banner_layout.addWidget(p_logo)
+
+        img_dir = os.path.dirname(os.path.abspath(__file__))
+        img_path = os.path.join(img_dir, "ParkTrack_Icon.png")
+        logo = QLabel()
+        pixmap = QPixmap(img_path)
+        logo.setPixmap(pixmap)
+        logo.setScaledContents(True)
+        logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        logo.setFixedSize(40, 40)
+        logo.setObjectName("Logo")
+        banner_layout.addWidget(logo)
         
         title = QLabel("TIP QC Hub Facility")
         title.setObjectName("bannerTitle")
@@ -127,13 +136,13 @@ class ParkingSystemApp(QMainWindow):
     #-------------------NEW------------------------------    
         
         stats_configurations = [
-            ("Total Spaces", self.total_stat, "white"),
+            ("Total Spaces", self.total_stat, Styles.ACCENT_GRAY.name()),
             ("Available", self.vacant_stat, Styles.ACCENT_GREEN.name()),
             ("Occupied", self.occupied_stat, Styles.ACCENT_RED.name())
         ]
         for text, metric_widget, font_color in stats_configurations:
             box = QFrame()
-            box.setFixedSize(95, 50)
+            box.setFixedSize(100, 50)
             box.setObjectName("bannerBox")
             box_vbox = QVBoxLayout(box)
             box_vbox.setContentsMargins(0, 4, 0, 4)
@@ -152,12 +161,11 @@ class ParkingSystemApp(QMainWindow):
             
         self.left_canvas_layout.addWidget(banner)
 
-
     # BUTTON FILTER LAYOUT FOR CAR AND MORTORCYCLE GRID LAYOUT
     # AND TRANSITIONING VIEW BETWEEN GRID LAYOUTS
     def ParkTrack_view_switcher_and_maps(self):
         switcher_strip = QHBoxLayout()
-        switcher_strip.setContentsMargins(0, 0, 0, 0)
+        switcher_strip.setContentsMargins(10, 5, 0, 0)
         
         lbl_switch = QLabel("Grid Layout View:")
         lbl_switch.setObjectName("mapFilter")
@@ -173,7 +181,7 @@ class ParkingSystemApp(QMainWindow):
         
         switcher_strip.addWidget(btn_cars_grid)
         switcher_strip.addWidget(btn_moto_grid)
-        switcher_strip.addStretch()
+        switcher_strip.addSpacing(180)
         
         self.left_canvas_layout.addLayout(switcher_strip)
         
@@ -182,7 +190,7 @@ class ParkingSystemApp(QMainWindow):
         # Page 0: Cars View
         car_page = QWidget()
         car_layout = QVBoxLayout(car_page)
-        car_layout.setContentsMargins(0, 0, 0, 0)
+        car_layout.setContentsMargins(10, 0, 0, 0)
         
         car_filter_strip = QHBoxLayout()
         car_filter_strip.addWidget(QLabel("Cars Status Filter:", objectName="mapFilter"))
@@ -197,7 +205,7 @@ class ParkingSystemApp(QMainWindow):
         car_filter_strip.addWidget(car_all_btn)
         car_filter_strip.addWidget(car_avail_btn)
         car_filter_strip.addWidget(car_occ_btn)
-        car_filter_strip.addStretch()
+        car_filter_strip.addSpacing(1)
         car_layout.addLayout(car_filter_strip)
         
         car_scroll = QScrollArea(objectName="scrollArea", widgetResizable=True)
@@ -214,7 +222,7 @@ class ParkingSystemApp(QMainWindow):
         # Page 1: Motorcycles View
         moto_page = QWidget()
         moto_layout = QVBoxLayout(moto_page)
-        moto_layout.setContentsMargins(0, 0, 0, 0)
+        moto_layout.setContentsMargins(10, 0, 0, 0)
         
         moto_filter_strip = QHBoxLayout()
         moto_filter_strip.addWidget(QLabel("Motorcycle Status Filter:", objectName="mapFilter"))
@@ -229,7 +237,7 @@ class ParkingSystemApp(QMainWindow):
         moto_filter_strip.addWidget(moto_all_btn)
         moto_filter_strip.addWidget(moto_avail_btn)
         moto_filter_strip.addWidget(moto_occ_btn)
-        moto_filter_strip.addStretch()
+        moto_filter_strip.addSpacing(1)
         moto_layout.addLayout(moto_filter_strip)
         
         moto_scroll = QScrollArea(objectName="scrollArea", widgetResizable=True)
@@ -288,7 +296,7 @@ class ParkingSystemApp(QMainWindow):
                 car_widget = ParkingSlotWidget(False, spot_label, v_type)
                 card_vbox.addWidget(car_widget)
                 
-                action_btn = QPushButton()
+                action_btn = QPushButton("Select Slot", objectName="action")
                 action_btn.clicked.connect(lambda checked, s=spot_label: self.handle_grid_button_click(s))
                 card_vbox.addWidget(action_btn)
                 
@@ -311,17 +319,17 @@ class ParkingSystemApp(QMainWindow):
         layout.setContentsMargins(10, 15, 10, 15)
         layout.setSpacing(12)
         
-        lbl_section = QLabel("Space Allocation Entry", objectName="Allocation")
+        lbl_section = QLabel("Space Allocation Entry", objectName="section")
         layout.addWidget(lbl_section)
         
-        self.lbl_plate = QLabel("Plate Number Reference: ")
+        self.lbl_plate = QLabel("Plate Number Reference: ", objectName="sub_section")
         self.subtext_labels.append(self.lbl_plate)
         layout.addWidget(self.lbl_plate)
         
         self.plateNum = QLineEdit(objectName="panelInput")
         layout.addWidget(self.plateNum)
         
-        lbl_type = QLabel("Vehicle Type: ")
+        lbl_type = QLabel("Vehicle Type: ", objectName="sub_section")
         self.subtext_labels.append(lbl_type)
         layout.addWidget(lbl_type)
         
@@ -332,7 +340,7 @@ class ParkingSystemApp(QMainWindow):
         layout.addWidget(self.vehicle_type_selector)
     #-------------------NEW------------------------------    
         
-        lbl_spot = QLabel("Target Parking Spot Code: ")
+        lbl_spot = QLabel("Target Parking Spot Code: ", objectName="sub_section")
         self.subtext_labels.append(lbl_spot)
         layout.addWidget(lbl_spot)
         
@@ -363,7 +371,7 @@ class ParkingSystemApp(QMainWindow):
         lbl_section = QLabel("Process Log-Out Operations", objectName="section")
         layout.addWidget(lbl_section)
         
-        lbl_active = QLabel("Select Active Occupied Spot:")
+        lbl_active = QLabel("Select Active Occupied Spot:", objectName="sub_section")
         self.subtext_labels.append(lbl_active)
         layout.addWidget(lbl_active)
         
@@ -381,9 +389,9 @@ class ParkingSystemApp(QMainWindow):
         self.hourly_rate_spin.setRange(0, 1000)
         self.hourly_rate_spin.setValue(20)
         
-        lbl_base = QLabel("Base Rate (₱):")
+        lbl_base = QLabel("Base Rate (₱):", objectName="sub_section")
         self.rate_subtext_labels.append(lbl_base)
-        lbl_hourly = QLabel("Hourly Fee (₱):")
+        lbl_hourly = QLabel("Hourly Fee (₱):", objectName="sub_section")
         self.rate_subtext_labels.append(lbl_hourly)
         
         rate_layout.addWidget(lbl_base, 0, 0)
@@ -392,7 +400,7 @@ class ParkingSystemApp(QMainWindow):
         rate_layout.addWidget(self.hourly_rate_spin, 1, 1)
         layout.addWidget(rate_box)
         
-        checkout_btn = QPushButton("Calculate & Clear Invoicing", objectName="checkoutBtn")
+        checkout_btn = QPushButton("Calculate and Clear Invoicing", objectName="checkoutBtn")
         checkout_btn.clicked.connect(self.process_timeout)
         layout.addWidget(checkout_btn)
         
@@ -412,7 +420,7 @@ class ParkingSystemApp(QMainWindow):
 
         ## styleSheet was moved to ParkTrack_Style.qss
         # lbl_history = QLabel("Session History Record Matrix:", styleSheet=f"{Styles.TEXT_MUTED} font-weight: bold; font-size: 11px;")
-        lbl_history = QLabel("Session History Record Matrix:", objectName="section2")
+        lbl_history = QLabel(" Session History Record Matrix:", objectName="section")
         layout.addWidget(lbl_history)
         layout.addWidget(self.ticket_log)
         self.control_tabs.addTab(panel, "Ledger Log")
@@ -429,19 +437,21 @@ class ParkingSystemApp(QMainWindow):
 
     #PARK TRACK THEME DISPLAY TOGGLE (NEAR CONTROL TABS)
     def ParkTrack_theme_toggle(self):
-        self.toggle_btn = QPushButton("Moon Emoji 🌙", objectName="Theme")
-        self.toggle_btn.setFlat(True)
+        self.toggle_btn = QPushButton("🌙", objectName="Theme")
+        #self.toggle_btn.setFlat(True)
         self.toggle_btn.clicked.connect(self.how_theme_toggle)
         self.control_tabs.setCornerWidget(self.toggle_btn, Qt.Corner.TopRightCorner)
 
     def how_theme_toggle(self, qss_filename):
-        if self.toggle_btn.text() == "Moon Emoji 🌙":
-            self.toggle_btn.setText("Sun Emoji ☀️")
+        if self.toggle_btn.text() == "🌙":
+            self.toggle_btn.setText("☀️")
             style_name = "ParkTrack_LightStyle.qss"
+            self.toggle_btn.setToolTip("Enable Dark Mode")
+                        
         else:
-            self.toggle_btn.setText("Moon Emoji 🌙")
+            self.toggle_btn.setText("🌙")
             style_name = "ParkTrack_Style.qss"
-
+            self.toggle_btn.setToolTip("Enable Light Mode")            
         self.apply_qss(style_name)
 
     def apply_qss(self, qss_filename):
@@ -455,9 +465,9 @@ class ParkingSystemApp(QMainWindow):
         if os.path.exists(qss_path):
             with open(qss_path, "r", encoding="utf-8") as f:
                 app.setStyleSheet(f.read())
+                app.styleHints().setToolTipWakeUpDelay(50) 
         else:
             print(f"Warning: Stylesheet file '{qss_filename}' not found.")
-
 
     
     #MESSAGE ACTIVITY LOG
@@ -658,17 +668,17 @@ class ParkingSystemApp(QMainWindow):
         self.engine.release_spot(selected_spot)
         self.update_ui()
 
-        # Fade in animation
-        def init_animations(self):
-            self.setWindowOpacity(0.0)
 
-            self.fade = QPropertyAnimation(
-                self, b"windowOpacity"
-            )
-            self.fade.setDuration(800)
-            self.fade.setStartValue(0.0)
-            self.fade.setEndValue(1.0)
-            self.fade.setEasingCurve(
-                QEasingCurve.Type.InOutQuad
-            )
-            self.fade.start()
+    def init_animations(self):
+        self.setWindowOpacity(0.0)
+
+        self.fade = QPropertyAnimation(
+            self, b"windowOpacity"
+        )
+        self.fade.setDuration(800)
+        self.fade.setStartValue(0.0)
+        self.fade.setEndValue(1.0)
+        self.fade.setEasingCurve(
+            QEasingCurve.Type.InOutQuad
+        )
+        self.fade.start()
