@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
     QCheckBox, QVBoxLayout, QHBoxLayout, QMessageBox,
     QFrame, QGraphicsDropShadowEffect
 )
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QColor, QPixmap
 
 
 def load_qss():
