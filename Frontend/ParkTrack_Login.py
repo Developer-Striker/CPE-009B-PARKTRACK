@@ -58,13 +58,18 @@ class EmployeeLoginWindow(QWidget):
         # Logo
         badge_layout = QHBoxLayout()
 
-        logo_badge = QLabel("P")
-        logo_badge.setObjectName("LogoBadge")
-        logo_badge.setFixedSize(44, 44)
-        logo_badge.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        img_dir = os.path.dirname(os.path.abspath(__file__))
+        img_path = os.path.join(img_dir, "ParkTrack_Icon.png")
+        logo = QLabel()
+        pixmap = QPixmap(img_path)
+        logo.setPixmap(pixmap)
+        logo.setScaledContents(True)
+        logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        logo.setFixedSize(50, 50)
+        logo.setObjectName("Logo")
 
         badge_layout.addStretch()
-        badge_layout.addWidget(logo_badge)
+        badge_layout.addWidget(logo)
         badge_layout.addStretch()
 
         card_layout.addLayout(badge_layout)
