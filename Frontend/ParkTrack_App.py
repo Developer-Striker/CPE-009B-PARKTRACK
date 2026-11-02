@@ -442,18 +442,20 @@ class ParkingSystemApp(QMainWindow):
         self.toggle_btn.clicked.connect(self.how_theme_toggle)
         self.control_tabs.setCornerWidget(self.toggle_btn, Qt.Corner.TopRightCorner)
 
-    def how_theme_toggle(self, qss_filename):
+    def how_theme_toggle(self):
         if self.toggle_btn.text() == "🌙":
             self.toggle_btn.setText("☀️")
             style_name = "ParkTrack_LightStyle.qss"
             self.toggle_btn.setToolTip("Enable Dark Mode")
-                        
+            ParkingSlotWidget.use_parktrack_style = False
         else:
             self.toggle_btn.setText("🌙")
             style_name = "ParkTrack_Style.qss"
-            self.toggle_btn.setToolTip("Enable Light Mode")            
+            self.toggle_btn.setToolTip("Enable Light Mode")
+            ParkingSlotWidget.use_parktrack_style = True            
         self.apply_qss(style_name)
-
+        self.update() 
+        
     def apply_qss(self, qss_filename):
         app = QApplication.instance()
         if not app:
