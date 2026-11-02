@@ -3,6 +3,7 @@ from PyQt6.QtCore import Qt, QPoint
 from PyQt6.QtGui import QPainter, QPen, QColor, QBrush, QPainterPath, QTransform, QFont
 
 class ParkingSlotWidget(QWidget):
+    use_parktrack_style = True    
     def __init__(self, is_occupied, spot_label, vehicle_type="Car", is_overstay=False, parent=None):
         super().__init__(parent)
         self.is_occupied = is_occupied
@@ -26,19 +27,27 @@ class ParkingSlotWidget(QWidget):
             color = QColor("#e67e22")
         else:
             color = QColor("#e74c3c")
-        
-        pen = QPen(color, 2)
-        pen2 = QPen(color, 3)
-        pen3 = QPen(color, 4) 
-        color2 = QColor("#949191")
-        brush = QBrush(color2)
+
+        if ParkingSlotWidget.use_parktrack_style: 
+            pen = QPen(color, 2)
+            pen2 = QPen(color, 3)
+            pen3 = QPen(color, 4) 
+            color2 = QColor("#2B3036")
+            brush = QBrush(color2)
+ 
+        else:
+            pen = QPen(color, 2)
+            pen2 = QPen(color, 3)
+            pen3 = QPen(color, 4) 
+            color2 = QColor("#ffffff")
+            brush = QBrush(color2)
 
         if self.vehicle_type == "Motorcycle":
             # Calling Motorcycle
             MotorcycleHelper.drawMotor_Body(painter, pen, brush)
             MotorcycleHelper.drawMotor_SideRearMirrors(painter, pen3)
             MotorcycleHelper.drawMotor_HandleBar(painter, pen, pen2, brush)
-            MotorcycleHelper.drawMotor_Seat(painter, pen)             
+            MotorcycleHelper.drawMotor_Seat(painter, pen)              
         else:
             # Calling Automobile 
             CarHelper.drawCar(painter, pen)
@@ -51,7 +60,7 @@ class ParkingSlotWidget(QWidget):
             
         # else:
         #     painter.setPen(QColor("#2ecc71") if not self.is_occupied else QColor("#e74c3c"))
-        #     badge_text = "MOTO" if self.vehicle_type == "Motorcycle" else "CAR"  # Will be removing this
+        #     badge_text = "MOTO" if self.vehicle_type == "Motorcycle" else "CAR" 
         #     font_size = 7
             
         # font = painter.font()
